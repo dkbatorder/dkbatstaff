@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DKBat Staff Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    #timer {
+      font-size: 56px;
+      margin: 20px 0;
+      letter-spacing: 2px;
+    }
+    button {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #ddd;
+    }
+    #bookings {
+      margin-top: 40px;
+      font-size: 16px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>DKBat Staff Dashboard</h1>
+  <div id="timer">00:00</div>
+  <button onclick="toggleTimer()">Start</button>
+  <div id="bookings">Loading latest bookings...</div>
+
+  <script>
+    let startTime, timerInterval;
+    let running = false;
+
+    function updateTimer() {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+      const seconds = String(elapsed % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+    }
+
+    function toggleTimer() {
+      if (!running) {
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+        document.querySelector('button').textContent = 'Stop';
+        running = true;
+      } else {
+        clearInterval(timerInterval);
+        document.querySelector('button').textContent = 'Start';
+        running = false;
+      }
+    }
+
+    const bookings = [
+      'Hand Massage - 10:00 AM',
+      'Full Body Massage - 12:30 PM',
+      'Neck Massage - 3:00 PM',
+      'Full Body Massage - 5:15 PM',
+      'Hand Massage - 7:00 PM'
+    ];
+    document.getElementById('bookings').innerHTML = '<b>Latest Bookings:</b><br>' + bookings.join('<br>');
+  </script>
+</body>
+</html>
