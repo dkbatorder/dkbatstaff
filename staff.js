@@ -1,6 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+// Import Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDq6rMjZ0CeydCkWmQFLVmw6fes__Dy_RI",
   authDomain: "dkbat-orders.firebaseapp.com",
@@ -8,32 +10,62 @@ const firebaseConfig = {
   projectId: "dkbat-orders",
   storageBucket: "dkbat-orders.firebasestorage.app",
   messagingSenderId: "208034554527",
-  appId: "1:208034554527:web:97ce73e6f8cc786ae878aa",
-  measurementId: "G-HHQ00E03VV"
+  appId: "1:208034554527:web:97ce73e6f8cc786ae878aa"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const bookingsContainer = document.getElementById("bookings");
+const bookingsList = document.getElementById("bookingsList");
 
-onValue(ref(db, "bookings"), (snapshot) => {
-  bookingsContainer.innerHTML = "";
-  if (snapshot.exists()) {
-    const data = snapshot.val();
-    Object.keys(data).forEach((key) => {
-      const b = data[key];
-      const div = document.createElement("div");
-      div.style = "background:#fff;color:#000;margin:10px;padding:10px;border-radius:8px;";
-      div.innerHTML = `
-        <b>${b.name}</b><br>
-        ${b.service}<br>
-        ${b.date} at ${b.time}<br>
-        Status: ${b.status}
-      `;
-      bookingsContainer.appendChild(div);
-    });
-  } else {
-    bookingsContainer.innerHTML = "<p>No bookings yet</p>";
+// Listen for bookings
+const bookingsRef = ref(db, "bookings");
+onValue(bookingsRef, (snapshot) => {
+  const data = snapshot.val();
+  bookingsList.innerHTML = "";
+
+  if (!data) {
+    bookingsList.innerHTML = "<p>No bookings yet</p>";
+    return;
   }
+
+  Object.entries(data).slice(-10).forEach(([id, booking]) => {
+    const div = document.createElement("div");
+    div.classList.add("booking");
+    div.innerHTML = `
+      <h3>${booking.name || "No Name"}</h3>
+      <p>Type: ${booking.type}</p>
+      <p>Date: ${booking.date}</p>
+      <div class="timer" id="timer-${id}">00:00</div>
+      <button id="start-${id}">Start</button>
+      <button id="complete-${id}" disabled>Complete</button>
+    `;
+    bookingsList.appendChild(div);
+
+    let timerInterval;
+    let seconds = 0;
+    const timerDisplay = document.getElementById(`timer-${id}`);
+    const startBtn = document.getElementById(`start-${id}`);
+    const completeBtn = document.getElementById(`complete-${id}`);
+
+    startBtn.addEventListener("click", () => {
+      startBtn.disabled = true;
+      completeBtn.disabled = false;
+
+      timerInterval = setInterval(() => {
+        seconds++;
+        const min = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const sec = String(seconds % 60).padStart(2, "0");
+        timerDisplay.textContent = `${min}:${sec}`;
+      }, 1000);
+    });
+
+    completeBtn.addEventListener("click", () => {
+      clearInterval(timerInterval);
+      update(ref(db, "bookings/" + id), { status: "completed", duration: timerDisplay.textContent });
+      completeBtn.disabled = true;
+      completeBtn.textContent = "Done ✔️";
+    });
+  });
 });
