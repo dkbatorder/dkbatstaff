@@ -112,7 +112,7 @@
       bookingsDiv.innerHTML = "<p>Loading...</p>";
 
       try {
-        const q = query(ref(db, "Bookings"), orderByKey(), limitToLast(10));
+        const q = query(ref(db, "bookings"), orderByKey(), limitToLast(10));
         const snapshot = await get(q);
         const data = snapshot.val() || {};
 
