@@ -1,58 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DKBat Staff</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: white;
-      color: black;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      color: #007BFF;
-      margin-bottom: 10px;
-    }
-    .booking {
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      margin: 10px auto;
-      padding: 15px;
-      max-width: 400px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .booking p {
-      margin: 6px 0;
-    }
-    .buttons {
-      margin-top: 10px;
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      margin: 0 5px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .timer {
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>DKBat Staff Panel</title>
+<style>
+body { font-family: Arial; background:#f2f2f2; padding:10px; }
+.card {
+  background:#fff;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:6px;
+}
+button {
+  padding:8px 12px;
+  margin:5px 5px 0 0;
+}
+</style>
 </head>
-<body>
-  <h1>DKBat Staff Panel</h1>
-  <div id="bookings">Loading bookings...</div>
 
-  <script type="module" src="staff.js"></script>
+<body>
+
+<h2>DKBat Staff Panel</h2>
+<div id="orders"></div>
+
+<script type="module" src="staff.js"></script>
 </body>
 </html>
