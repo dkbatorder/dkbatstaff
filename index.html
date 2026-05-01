@@ -1,28 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>DKBat Staff Panel</title>
-<style>
-body { font-family: Arial; background:#f2f2f2; padding:10px; }
-.card {
-  background:#fff;
-  padding:15px;
-  margin-bottom:10px;
-  border-radius:6px;
-}
-button {
-  padding:8px 12px;
-  margin:5px 5px 0 0;
-}
-</style>
+  <title>DKBat Staff Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 400px;
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #222;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #timer {
+      font-size: 28px;
+      font-weight: bold;
+      color: green;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 
 <body>
 
-<h2>DKBat Staff Panel</h2>
-<div id="orders"></div>
+<h1>DKBat Staff Panel</h1>
 
-<script type="module" src="staff.js"></script>
+<div class="card">
+  <h2>Booking INV 1</h2>
+  <p><b>Name:</b> Sathesh</p>
+  <p><b>Massage:</b> Full Body Massage</p>
+  <p><b>Time:</b> 8:00 PM</p>
+  <p><b>Date:</b> 1/5/2026</p>
+
+  <div id="timer">30:00</div>
+
+  <button onclick="startTimer()">Start Session</button>
+</div>
+
+<script>
+let timer;
+let seconds = 1800; // 30 minutes
+
+function startTimer() {
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+    if (seconds <= 0) {
+      clearInterval(timer);
+      alert("Massage Session Completed");
+      return;
+    }
+
+    seconds--;
+
+    let min = String(Math.floor(seconds / 60)).padStart(2, '0');
+    let sec = String(seconds % 60).padStart(2, '0');
+
+    document.getElementById("timer").innerText = min + ":" + sec;
+  }, 1000);
+}
+</script>
+
 </body>
 </html>
